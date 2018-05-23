@@ -41,7 +41,6 @@ import reactor.core.publisher.Mono;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
-import java.util.OptionalLong;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
@@ -346,7 +345,7 @@ public final class DiscordClient {
                 .init(new StoreContext(serviceMediator.getClientConfig().getShardIndex(), MessageBean.class)) //Stores should be initialized before the gateway sends events
                 .then(serviceMediator.getRestClient().getGatewayService().getGateway())
                 .flatMap(response -> serviceMediator.getGatewayClient()
-                        .execute(RouteUtils.expandQuery(response.getUrl(), parameters)))
+                        .execute(RouteUtils.expandQuery(response.getUrl() + "/", parameters))) // TODO reactor-netty#228 must be re-merged with 0.8
                 .then(serviceMediator.getStateHolder().invalidateStores())
                 .then(serviceMediator.getStoreService().dispose());
     }
