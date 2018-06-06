@@ -41,6 +41,7 @@ import discord4j.rest.request.Router;
 import discord4j.rest.route.Routes;
 import discord4j.store.service.StoreService;
 import discord4j.store.service.StoreServiceLoader;
+import discord4j.voice.VoiceClient;
 import discord4j.voice.VoiceClientFactory;
 import discord4j.voice.VoicePayloadReader;
 import discord4j.voice.VoicePayloadWriter;
@@ -71,12 +72,16 @@ public final class DiscordClientBuilder {
     private IdentifyOptions identifyOptions;
     private RetryOptions retryOptions;
 
+    private VoiceClientFactory voiceClientFactory;
+
     public DiscordClientBuilder(final String token) {
         this.token = Objects.requireNonNull(token);
         storeService = new StoreServiceLoader().getStoreService();
         eventProcessor = EmitterProcessor.create(false);
         eventScheduler = Schedulers.elastic();
         retryOptions = new RetryOptions(Duration.ofSeconds(2), Duration.ofSeconds(120), Integer.MAX_VALUE);
+
+        voiceClientFactory = new DefaultVoiceClientFactory();
     }
 
     public String getToken() {
@@ -200,10 +205,9 @@ public final class DiscordClientBuilder {
                 identifyOptions.getShardCount());
         final EventDispatcher eventDispatcher = new EventDispatcher(eventProcessor, eventScheduler);
 
-        final VoiceClientFactory voiceClientFactory =
-                new DefaultVoiceClientFactory(new VoicePayloadReader(mapper), new VoicePayloadWriter(mapper)); // FIXME
+        final VoiceClient voiceClient = voiceClientFactory.getVoiceClient(new VoicePayloadReader(mapper), new VoicePayloadWriter(mapper));
 
-        final ServiceMediator serviceMediator = new ServiceMediator(gatewayClient, restClient, voiceClientFactory,
+        final ServiceMediator serviceMediator = new ServiceMediator(gatewayClient, restClient, voiceClient,
                 storeService, stateHolder, eventDispatcher, config);
 
         serviceMediator.getGatewayClient().dispatch()
