@@ -11,9 +11,8 @@ pipeline {
 
 					}
 					steps {
-						sh '''gradle clean
-	gradle --max-workers 2 downloadDependencies
-	gradle --max-workers 2 --continue test'''
+						sh '''gradle --max-workers 2 downloadDependencies
+gradle --max-workers 2 --continue test'''
 					}
 				}
 				stage('Jdk9') {
@@ -24,9 +23,8 @@ pipeline {
 
 					}
 					steps {
-						sh '''gradle clean
-	gradle --max-workers 2 downloadDependencies
-	gradle --max-workers 2 --continue test'''
+						sh '''gradle --max-workers 2 downloadDependencies
+gradle --max-workers 2 --continue test'''
 					}
 				}
 				stage('Jdk10') {
@@ -37,9 +35,8 @@ pipeline {
 
 					}
 					steps {
-						sh '''gradle clean
-	gradle --max-workers 2 downloadDependencies
-	gradle --max-workers 2 --continue test'''
+						sh '''gradle --max-workers 2 downloadDependencies
+gradle --max-workers 2 --continue test'''
 					}
 				}
 			}
