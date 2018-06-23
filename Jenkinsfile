@@ -2,17 +2,47 @@ pipeline {
   agent any
   stages {
     stage('Build') {
-      agent {
-        docker {
-          image 'gradle:4.8-jdk8'
-        }
+			parallel {
+				stage('Jdk8') {
+					agent {
+						docker {
+							image 'gradle:4.8-jdk8'
+						}
 
-      }
-      steps {
-        sh '''./gradlew clean
-./gradlew --max-workers 2 downloadDependencies
-./gradlew --max-workers 2 --continue test'''
-      }
+					}
+					steps {
+						sh '''gradle clean
+	gradle --max-workers 2 downloadDependencies
+	gradle --max-workers 2 --continue test'''
+					}
+				}
+				stage('Jdk9') {
+					agent {
+						docker {
+							image 'gradle:4.8-jdk9'
+						}
+
+					}
+					steps {
+						sh '''gradle clean
+	gradle --max-workers 2 downloadDependencies
+	gradle --max-workers 2 --continue test'''
+					}
+				}
+				stage('Jdk10') {
+					agent {
+						docker {
+							image 'gradle:4.8-jdk10'
+						}
+
+					}
+					steps {
+						sh '''gradle clean
+	gradle --max-workers 2 downloadDependencies
+	gradle --max-workers 2 --continue test'''
+					}
+				}
+			}
     }
     stage('End') {
       steps {
