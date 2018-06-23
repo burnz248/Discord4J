@@ -21,7 +21,7 @@ pipeline {
     }
   }
   environment {
-    token = 'MzQ2NzIwODEzMzQyMzkyMzMw.DII6pg.lgUCRRyk1ax1hF5-8qvIZuWiQiM'
+    token = credentials('test-bot-token')
     permanentChannel = '346719828784185377'
     modifyChannel = '347808531057213442'
     permanentMessage = '372217109985492993'
