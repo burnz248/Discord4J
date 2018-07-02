@@ -97,7 +97,7 @@ public class GuildService extends RestService {
                 .exchange(getRouter());
     }
 
-    public Mono<String> modifyOwnNickname(long guildId, NicknameModifyRequest request) {
+    public Mono<NicknameModifyResponse> modifyOwnNickname(long guildId, NicknameModifyRequest request) {
         return Routes.NICKNAME_MODIFY_OWN.newRequest(guildId)
                 .body(request)
                 .exchange(getRouter());

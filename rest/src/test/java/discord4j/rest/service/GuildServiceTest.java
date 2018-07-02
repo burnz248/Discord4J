@@ -144,7 +144,7 @@ public class GuildServiceTest {
     @Test
     public void testModifyOwnNickname() {
         NicknameModifyRequest req = new NicknameModifyRequest("nickname");
-        log.info("{}", getGuildService().modifyOwnNickname(guild, req).block());
+        getGuildService().modifyOwnNickname(guild, req).block();
     }
 
     @Test
