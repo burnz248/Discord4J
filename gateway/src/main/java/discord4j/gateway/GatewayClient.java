@@ -129,9 +129,9 @@ public class GatewayClient {
 
             // Subscribe each inbound GatewayPayload to the receiver sink
             Disposable inboundSub = handler.inbound()
-                    .doOnError(t -> log.info("Inbound threw an error"))
-                    .doOnCancel(() -> log.info("Inbound cancelled"))
-                    .doOnComplete(() -> log.info("Inbound completed"))
+                    .doOnError(t -> log.debug("Inbound encountered an error"))
+                    .doOnCancel(() -> log.debug("Inbound cancelled"))
+                    .doOnComplete(() -> log.debug("Inbound completed"))
                     .subscribe(receiverSink::next);
 
             // Subscribe the receiver to process and transform the inbound payloads into Dispatch events
@@ -157,7 +157,7 @@ public class GatewayClient {
                     .then()
                     .doOnCancel(() -> close(false))
                     .doOnTerminate(() -> {
-                        log.info("Terminating websocket client, disposing subscriptions");
+                        log.debug("Terminating websocket client, disposing subscriptions");
                         inboundSub.dispose();
                         receiverSub.dispose();
                         senderSub.dispose();
