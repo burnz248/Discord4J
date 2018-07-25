@@ -35,6 +35,9 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Consumer;
 
+/**
+ * HTTP client tailored for Discord REST API requests.
+ */
 public class DiscordWebClient {
 
     private static final Logger log = Loggers.getLogger(DiscordWebClient.class);
